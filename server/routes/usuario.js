@@ -3,12 +3,15 @@ const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const app = express();
 const Usuario = require('../models/usuario');
+const { verificarToken, verificarAdmin_role } = require('../middlewares/autentificacion');
 
-app.get('/', function(req, res) {
-    res.json('Hello World');
-});
 
-app.get('/usuario', function(req, res) {
+//==========================
+//SERVICIOS DEL SERVER REST
+//==========================
+
+
+app.get('/usuario', verificarToken, (req, res) => {
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -43,7 +46,7 @@ app.get('/usuario', function(req, res) {
         });
 });
 
-app.post('/usuario', function(req, res) {
+app.post('/usuario', [verificarToken, verificarAdmin_role], function(req, res) {
 
     let body = req.body;
 
@@ -71,7 +74,7 @@ app.post('/usuario', function(req, res) {
     });
 });
 
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', [verificarToken, verificarAdmin_role], function(req, res) {
 
     let id = req.params.id;
 
@@ -96,7 +99,7 @@ app.put('/usuario/:id', function(req, res) {
 
 });
 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificarToken, verificarAdmin_role], function(req, res) {
 
     let id = req.params.id;
 
