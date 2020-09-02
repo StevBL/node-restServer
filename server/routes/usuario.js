@@ -6,9 +6,9 @@ const Usuario = require('../models/usuario');
 const { verificarToken, verificarAdmin_role } = require('../middlewares/autentificacion');
 
 
-//==========================
-//SERVICIOS DEL SERVER REST
-//==========================
+//======================================
+//SERVICIOS DEL SERVER REST => USUARIOS
+//======================================
 
 
 app.get('/usuario', verificarToken, (req, res) => {
