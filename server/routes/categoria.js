@@ -22,6 +22,8 @@ app.get('/categorias', verificarToken, (req, res) => {
     Categoria.find()
         .skip(desde)
         .limit(limite)
+        .populate('usuario', 'nombre email') //obtener datos de otras tablas, en este caso datos de la tabla usuario del usuario en cuestion
+        .sort('descripcion')
         .exec((err, categorias) => {
 
             if (err) {
@@ -106,7 +108,7 @@ app.post('/categoria', [verificarToken, verificarAdmin_role], function(req, res)
             });
         }
 
-        if (categoriaDB) {
+        if (!categoriaDB) {
             return res.status(500).json({
                 ok: false,
                 err
