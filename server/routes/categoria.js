@@ -25,7 +25,7 @@ app.get('/categorias', verificarToken, (req, res) => {
         .exec((err, categorias) => {
 
             if (err) {
-                return res.status(400).json({
+                return res.status(500).json({
                     ok: false,
                     err
                 });
@@ -51,7 +51,7 @@ app.get('/categoria/:id', verificarToken, (req, res) => {
         .exec((err, categoria) => {
 
             if (err) {
-                return res.status(400).json({
+                return res.status(500).json({
                     ok: false,
                     err
                 });
@@ -100,14 +100,14 @@ app.post('/categoria', [verificarToken, verificarAdmin_role], function(req, res)
     categoria.save((err, categoriaDB) => {
 
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 err
             });
         }
 
         if (categoriaDB) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 err
             });
@@ -148,7 +148,7 @@ app.put('/categoria/:id', [verificarToken, verificarAdmin_role], function(req, r
     Categoria.findByIdAndUpdate(id, categ, { new: true, runValidators: true }, (err, categoriaDB) => {
 
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 err
             });
@@ -181,7 +181,7 @@ app.delete('/categoria/:id', [verificarToken, verificarAdmin_role], function(req
     Categoria.findByIdAndRemove(id, (err, categoriaBorrada) => {
 
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 err
             });
