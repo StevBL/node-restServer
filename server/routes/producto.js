@@ -9,6 +9,41 @@ let Producto = require('../models/producto');
 //SERVICIOS DEL SERVER REST => PRODUCTOS
 //========================================
 
+// Buscar Productos
+app.get('/productos/buscar/:termino', verificarToken, (req, res) => {
+
+    let termino = req.params.termino;
+
+    //expresiones regulares
+    let regex = new RegExp(termino, 'i');
+
+    Producto.find({ nombre : regex })
+        .populate('categoria', 'descripcion')
+        .exec((err, productos) => {
+
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            if (!productos) {
+                return res.status(400).json({
+                    ok: false,
+                    err: {
+                        message: 'Producto no encontrado'
+                    }
+                });
+            }
+
+            res.json({
+                ok: true,
+                productos
+            });
+        });
+});
+
 //Obtiene todas los productos paginadas
 app.get('/productos', verificarToken, (req, res) => {
 
